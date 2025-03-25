@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "MainCharacter.generated.h"
 
 class UInputAction;
@@ -20,14 +22,21 @@ public:
 	// Sets default values for this character's properties
 	AMainCharacter();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UCameraComponent* Camera;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USpringArmComponent* SpringArm;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void Jump(const FInputActionValue& Value);
+	void Crouch(const FInputActionValue& Value);
 	void Sprint(const FInputActionValue& Value);
+	void UseInteract(const FInputActionValue& Value);
 
 	int32 MaxHp = 1;
 	int32 CurrentHp;
@@ -56,7 +65,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	UInputAction* SprintAction;	
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* InteractAction;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprint", meta = (AllowPrivateAccess = "true"))
-	bool bSprintCharacter = false;
+	bool bSprint = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crouch", meta = (AllowPrivateAccess = "true"))
+	bool bCrouch = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crouch", meta = (AllowPrivateAccess = "true"))
+	bool bInteract = false;
 
 };
