@@ -1,6 +1,7 @@
 #include "InteractiveButton.h"
 #include "GameFramework/Character.h"
 #include "Components/StaticMeshComponent.h"
+#include "Door.h"
 
 AInteractiveButton::AInteractiveButton()
 {
@@ -8,6 +9,8 @@ AInteractiveButton::AInteractiveButton()
 
 	ButtonMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ButtonMesh"));
 	RootComponent = ButtonMesh;
+
+	bIsActivated = true;
 }
 
 // Called when the game starts or when spawned
@@ -19,6 +22,21 @@ void AInteractiveButton::BeginPlay()
 
 void AInteractiveButton::Interact(ACharacter* InteractingCharacter)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Bouton activé par : %s"), *InteractingCharacter->GetName());
+	bIsActivated = !bIsActivated;
+
+	for (ADoor* Door : LinkedDoors)
+	{
+		if (Door)
+		{
+			if (Door->bIsOpen)
+			{
+				Door->CloseDoor();
+			}
+			else
+			{
+				Door->OpenDoor();
+			}
+		}
+	}
 }
 

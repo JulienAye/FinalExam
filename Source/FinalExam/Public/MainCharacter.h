@@ -37,9 +37,14 @@ protected:
 	void Crouch(const FInputActionValue& Value);
 	void Sprint(const FInputActionValue& Value);
 	void UseInteract(const FInputActionValue& Value);
+	void SpawnClone(const FInputActionValue& Value);
 
 	int32 MaxHp = 1;
 	int32 CurrentHp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clone")
+	int32 AvailableClones = 1; //At start the player will be able to create only 1 clone
+
 
 	float valueAim = 1;
 
@@ -68,6 +73,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	UInputAction* InteractAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* SpawnCloneAction;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprint", meta = (AllowPrivateAccess = "true"))
 	bool bSprint = false;
 
@@ -77,4 +85,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crouch", meta = (AllowPrivateAccess = "true"))
 	bool bInteract = false;
 
+	UPROPERTY(EditAnywhere, Category = "Clone")
+	TSubclassOf<class ACloneCharacter> CloneClass;
 };

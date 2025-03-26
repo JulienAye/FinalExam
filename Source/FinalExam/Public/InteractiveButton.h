@@ -5,6 +5,8 @@
 #include "InteractableInterface.h"
 #include "InteractiveButton.generated.h"
 
+class ADoor;
+
 UCLASS()
 class FINALEXAM_API AInteractiveButton : public AActor, public IInteractableInterface
 {
@@ -23,4 +25,7 @@ protected:
 private:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* ButtonMesh; //To change the mesh of the button
+
+	UPROPERTY(EditAnywhere, Category = "Door")
+	TArray<ADoor*> LinkedDoors; //To store the actors that will be affected by the button
 };

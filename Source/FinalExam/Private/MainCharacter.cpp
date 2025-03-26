@@ -6,6 +6,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InteractableInterface.h"
 #include "Engine/World.h"
+#include "CloneCharacter.h"
 #include "GameFramework/PlayerController.h"
 
 // Sets default values
@@ -120,6 +121,27 @@ void AMainCharacter::UseInteract(const FInputActionValue& Value)
 	}
 }
 
+void AMainCharacter::SpawnClone(const FInputActionValue& Value)
+{
+	if (AvailableClones <= 0)
+		return;
+
+	if (CloneClass)
+	{
+		FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 50.f;
+		FRotator SpawnRotation = GetActorRotation();
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+
+		ACloneCharacter* Clone = GetWorld()->SpawnActor<ACloneCharacter>(CloneClass, SpawnLocation, SpawnRotation, SpawnParams);
+		if (Clone)
+		{
+			AvailableClones--;
+		}
+	}
+}
+
 // Called every frame
 void AMainCharacter::Tick(float DeltaTime)
 {
@@ -147,5 +169,6 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &AMainCharacter::Sprint);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AMainCharacter::UseInteract);
+		EnhancedInputComponent->BindAction(SpawnCloneAction, ETriggerEvent::Triggered, this, &AMainCharacter::SpawnClone);
 	}
 }

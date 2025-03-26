@@ -16,4 +16,7 @@ class FINALEXAM_API IInteractableInterface
 
 public:
 	virtual void Interact(ACharacter* InteractingCharacter) = 0;
+
+protected:
+	bool bIsActivated;
 };
