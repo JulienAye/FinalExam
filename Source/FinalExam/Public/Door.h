@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Door.generated.h"
 
+class AInteractiveButton;
+
 UCLASS()
 class FINALEXAM_API ADoor : public AActor
 {
@@ -23,8 +25,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void RegisterButton(class AInteractiveButton* Button);
+	void EvaluateDoorCondition();
+
 	void OpenDoor();
 	void CloseDoor();
+
+	UPROPERTY(EditAnywhere, Category = "Door")
+	int32 RequiredButtons = 1; //Because it will need at least 1 button to open
+
+	UPROPERTY(EditAnywhere, Category = "Door")
+	TArray<AInteractiveButton*> LinkedButtons;
 
 	bool bIsOpen;
 

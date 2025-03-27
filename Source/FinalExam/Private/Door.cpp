@@ -2,6 +2,7 @@
 
 
 #include "Door.h"
+#include "InteractiveButton.h"
 
 // Sets default values
 ADoor::ADoor()
@@ -30,6 +31,36 @@ void ADoor::Tick(float DeltaTime)
 
 	FVector NewPosition = FMath::VInterpTo(CurrentPosition, DesiredPosition, DeltaTime, DoorSpeed);
 	SetActorLocation(NewPosition);
+}
+
+void ADoor::RegisterButton(AInteractiveButton* Button)
+{
+	if (Button && !LinkedButtons.Contains(Button))
+	{
+		LinkedButtons.Add(Button);
+	}
+}
+
+void ADoor::EvaluateDoorCondition()
+{
+	int32 ActivatedButtons = 0;
+
+	for (AInteractiveButton* Button : LinkedButtons)
+	{
+		if (Button && Button->IsActivated())
+		{
+			ActivatedButtons++;
+		}
+	}
+
+	if (ActivatedButtons >= RequiredButtons)
+	{
+		OpenDoor();
+	}
+	else {
+		CloseDoor();
+
+	}
 }
 
 void ADoor::OpenDoor()

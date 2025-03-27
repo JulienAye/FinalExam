@@ -11,6 +11,7 @@
 
 class UInputAction;
 class UInputMappingContext;
+class ACloneCharacter;
 struct FInputActionValue;
 
 UCLASS()
@@ -87,4 +88,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Clone")
 	TSubclassOf<class ACloneCharacter> CloneClass;
+
+	UPROPERTY()
+	TArray<ACloneCharacter*> ActiveClones;
 };

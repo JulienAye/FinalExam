@@ -72,19 +72,16 @@ void AMainCharacter::Sprint(const FInputActionValue& Value)
 
 void AMainCharacter::UseInteract(const FInputActionValue& Value)
 {
-	//bInteract = Value.Get<bool>();
-	//bInteract = true;
-
 	if (!Camera)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Camera est NULL !"));
+		UE_LOG(LogTemp, Error, TEXT("player camera is null"));
 		return;
 	}
 
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	if (!PlayerController)
 	{
-		UE_LOG(LogTemp, Error, TEXT("PlayerController est NULL !"));
+		UE_LOG(LogTemp, Error, TEXT("PlayerController is null"));
 		return;
 	}
 
@@ -106,24 +103,32 @@ void AMainCharacter::UseInteract(const FInputActionValue& Value)
 	if (bHit)
 	{
 		AActor* HitActor = HitResult.GetActor(); //Get the actor hit  
-		if (HitActor && HitActor->Implements<UInteractableInterface>())
+		if (HitActor && HitActor->Implements<UInteractableInterface>()) //Check if the actor implements the InteractableInterface
 		{
 			IInteractableInterface* Interactable = Cast<IInteractableInterface>(HitActor);
-			if (Interactable)
+			if (Interactable) //If the actor implements the interface, call the Interact function
 			{
 				if (GEngine)
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Interaction détectée !"));
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Interacted with something"));
 				}
 				Interactable->Interact(this);
 			}
+		}
+	}
+
+	for (ACloneCharacter* Clone : ActiveClones)
+	{
+		if (Clone && IsValid(Clone)) //Check if the clone is not being destroyed
+		{
+			Clone->CloneInteract();
 		}
 	}
 }
 
 void AMainCharacter::SpawnClone(const FInputActionValue& Value)
 {
-	if (AvailableClones <= 0)
+	if (AvailableClones <= 0) 
 		return;
 
 	if (CloneClass)
@@ -138,6 +143,7 @@ void AMainCharacter::SpawnClone(const FInputActionValue& Value)
 		if (Clone)
 		{
 			AvailableClones--;
+			ActiveClones.Add(Clone);//I add the clone to my ActiveClones array, will be easier in the future to manage their interactions or delete them
 		}
 	}
 }

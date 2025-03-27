@@ -18,5 +18,6 @@ public:
 	virtual void Interact(ACharacter* InteractingCharacter) = 0;
 
 protected:
-	bool bIsActivated;
+	
+	virtual bool IsActivated() const = 0;
 };
