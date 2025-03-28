@@ -2,6 +2,7 @@
 
 #include "CloneCharacter.h"
 #include "Components/BoxComponent.h"
+#include "MainCharacter.h"
 #include "InteractableInterface.h"
 
 // Sets default values
@@ -21,8 +22,12 @@ ACloneCharacter::ACloneCharacter()
 
 // Called when the game starts or when spawned
 void ACloneCharacter::BeginPlay()
-{
+{	
 	Super::BeginPlay();
+
+
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACloneCharacter::DestroyClone, 5.f, false, 5.f);
 
 }
 
@@ -54,6 +59,22 @@ void ACloneCharacter::CloneInteract()
 			}
 		}
 	}
+}
+
+void ACloneCharacter::DestroyClone()
+{
+	ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner());
+	if (OwnerCharacter)
+	{
+		AMainCharacter* Player = Cast<AMainCharacter>(OwnerCharacter);
+		if (Player)
+		{
+			Player->NotifyCloneDestruction(); //Notify the player so he can spawn another clone
+		}
+	}
+
+	//Visual effect to be implemented
+	Destroy();
 }
 
 void ACloneCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

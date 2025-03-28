@@ -7,6 +7,8 @@
 #include "Components/BoxComponent.h"
 #include "CloneCharacter.generated.h"
 
+
+
 UCLASS()
 class FINALEXAM_API ACloneCharacter : public ACharacter
 {
@@ -26,6 +28,7 @@ protected:
 	UPROPERTY()
 	TArray<AActor*> ActorsToInteract;
 
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -36,9 +39,16 @@ public:
 	void CloneInteract();
 
 	UFUNCTION()
+	void DestroyClone();
+
+	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 	UFUNCTION()
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+
+private:
+	FTimerHandle TimerHandle;
 
 };

@@ -178,3 +178,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(SpawnCloneAction, ETriggerEvent::Triggered, this, &AMainCharacter::SpawnClone);
 	}
 }
+
+void AMainCharacter::NotifyCloneDestruction()
+{
+	AvailableClones++;
+}
