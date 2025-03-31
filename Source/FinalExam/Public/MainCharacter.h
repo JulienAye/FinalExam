@@ -26,8 +26,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCameraComponent* Camera;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USpringArmComponent* SpringArm;
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USpringArmComponent* SpringArm;*/
 
 protected:
 	// Called when the game starts or when spawned

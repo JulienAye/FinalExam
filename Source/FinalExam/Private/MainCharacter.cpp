@@ -7,6 +7,7 @@
 #include "InteractableInterface.h"
 #include "Engine/World.h"
 #include "CloneCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 
 // Sets default values
@@ -15,9 +16,15 @@ AMainCharacter::AMainCharacter()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->SetupAttachment(RootComponent);
-	Camera->SetupAttachment(SpringArm);
+	//SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	//SpringArm->SetupAttachment(RootComponent);
+	Camera->SetupAttachment(RootComponent);
+	Camera->SetRelativeLocation(FVector(0.f, 0.f, 64.f)); // ajustable selon ton mesh
+	Camera->bUsePawnControlRotation = true;
+	bUseControllerRotationYaw = true;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	GetMesh()->SetOwnerNoSee(true);
+
 }
 
 // Called when the game starts or when spawned
@@ -68,6 +75,15 @@ void AMainCharacter::Crouch(const FInputActionValue& Value)
 void AMainCharacter::Sprint(const FInputActionValue& Value)
 {
 	bSprint = Value.Get<bool>();
+
+	if (bSprint)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 600.f;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 300.f;
+	}
 }
 
 void AMainCharacter::UseInteract(const FInputActionValue& Value)

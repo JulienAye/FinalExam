@@ -14,6 +14,20 @@ AInteractiveButton::AInteractiveButton()
 	bIsActivated = false;
 }
 
+void AInteractiveButton::ResetButton()
+{
+	bIsActivated = false;
+	UpdateButtonMaterial();
+
+	for (ADoor* Door : LinkedDoors)
+	{
+		if (Door)
+		{
+			Door->EvaluateDoorCondition();
+		}
+	}
+}
+
 // Called when the game starts or when spawned
 void AInteractiveButton::BeginPlay()
 {
@@ -47,16 +61,10 @@ void AInteractiveButton::Interact(ACharacter* InteractingCharacter)
 		{
 
 			Door->EvaluateDoorCondition();
-			//if (Door->bIsOpen)
-			//{
-			//	Door->CloseDoor();
-			//}
-			//else
-			//{
-			//	Door->OpenDoor();
-			//}
 		}
 	}
+
+	GetWorld()->GetTimerManager().SetTimer(ResetTimerHandle, this, &AInteractiveButton::ResetButton, 7.f, false);
 }
 
 void AInteractiveButton::UpdateButtonMaterial()

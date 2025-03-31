@@ -25,10 +25,7 @@ void ACloneCharacter::BeginPlay()
 {	
 	Super::BeginPlay();
 
-
-
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACloneCharacter::DestroyClone, 5.f, false, 5.f);
-
 }
 
 // Called every frame

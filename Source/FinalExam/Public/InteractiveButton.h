@@ -31,6 +31,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Button|Material")
 	UMaterialInterface* DeactivatedMaterial;
 
+	void ResetButton();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -43,4 +45,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Button|Sound")
 	USoundBase* InteractSound;
+
+	FTimerHandle ResetTimerHandle;
 };
