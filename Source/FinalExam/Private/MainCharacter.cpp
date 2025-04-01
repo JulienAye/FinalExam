@@ -13,17 +13,25 @@
 // Sets default values
 AMainCharacter::AMainCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	//SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	//SpringArm->SetupAttachment(RootComponent);
 	Camera->SetupAttachment(RootComponent);
-	Camera->SetRelativeLocation(FVector(0.f, 0.f, 64.f)); // ajustable selon ton mesh
+	Camera->SetRelativeLocation(FVector(0.f, 0.f, 64.f)); 
 	Camera->bUsePawnControlRotation = true;
+	
+	GetMesh()->SetOwnerNoSee(true);
+
 	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
-	GetMesh()->SetOwnerNoSee(true);
+
+	/*ArmsMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ArmsMesh"));
+	ArmsMesh->SetupAttachment(Camera);
+	ArmsMesh->SetOnlyOwnerSee(true);
+	ArmsMesh->bCastDynamicShadow = false;
+	ArmsMesh->CastShadow = false;
+	ArmsMesh->SetRelativeLocation(FVector(0.f, 0.f, -140.f));
+	ArmsMesh->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));*/
+
 
 }
 

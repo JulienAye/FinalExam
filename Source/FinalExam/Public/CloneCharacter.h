@@ -5,9 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Components/BoxComponent.h"
+#include "Components/WidgetComponent.h"
+#include "Blueprint/UserWidget.h"
 #include "CloneCharacter.generated.h"
 
-
+class UProgressBar;
 
 UCLASS()
 class FINALEXAM_API ACloneCharacter : public ACharacter
@@ -17,6 +19,14 @@ class FINALEXAM_API ACloneCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ACloneCharacter();
+
+	UPROPERTY(VisibleAnywhere, Category = "UI")
+	UWidgetComponent* CloneWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> CloneWidgetClass;
+	
+	void UpdateLifeBar(float ratio);
 		 
 protected:
 	// Called when the game starts or when spawned
@@ -50,5 +60,8 @@ public:
 
 private:
 	FTimerHandle TimerHandle;
+
+	float LifeDuration = 7.f;
+	float LifeRemaining;
 
 };

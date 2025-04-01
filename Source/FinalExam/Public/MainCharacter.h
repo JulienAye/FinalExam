@@ -94,4 +94,7 @@ public:
 
 	UPROPERTY()
 	TArray<ACloneCharacter*> ActiveClones;
+
+	UPROPERTY(VisibleAnywhere, Category = "Clone")
+	USkeletalMeshComponent* ArmsMesh;
 };

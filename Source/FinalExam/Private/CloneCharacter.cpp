@@ -4,20 +4,31 @@
 #include "Components/BoxComponent.h"
 #include "MainCharacter.h"
 #include "InteractableInterface.h"
+#include "Components/WidgetComponent.h"
+#include "Components/ProgressBar.h"
 
 // Sets default values
 ACloneCharacter::ACloneCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	InteractionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("InteractionBox"));
 	InteractionBox->SetupAttachment(RootComponent);
 	InteractionBox->SetBoxExtent(FVector(100.f, 100.f, 100.f));
-
 	InteractionBox->OnComponentBeginOverlap.AddDynamic(this, &ACloneCharacter::OnOverlapBegin);
 	InteractionBox->OnComponentEndOverlap.AddDynamic(this, &ACloneCharacter::OnOverlapEnd);
 
+	LifeRemaining = LifeDuration;
+
+	CloneWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("CloneWidget"));
+	CloneWidget->SetupAttachment(RootComponent);
+	CloneWidget->SetRelativeLocation(FVector(0.f, 0.f, 250.f));
+	CloneWidget->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
+	CloneWidget->SetWidgetSpace(EWidgetSpace::World);
+	CloneWidget->SetDrawSize(FVector2D(150.f, 20.f));
+	CloneWidget->SetPivot(FVector2D(0.5f, 0.5f));
+	CloneWidget->SetVisibility(true);
+	CloneWidget->SetHiddenInGame(false);
 }
 
 // Called when the game starts or when spawned
@@ -25,13 +36,40 @@ void ACloneCharacter::BeginPlay()
 {	
 	Super::BeginPlay();
 
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACloneCharacter::DestroyClone, 5.f, false, 5.f);
+	if (CloneWidgetClass)
+	{
+		CloneWidget->SetWidgetClass(CloneWidgetClass);
+	}
+}
+
+void ACloneCharacter::UpdateLifeBar(float ratio)
+{
+	if (CloneWidget)
+	{
+		if (UUserWidget* Widget = CloneWidget->GetUserWidgetObject())
+		{
+			if (UProgressBar* Progress = Cast<UProgressBar>(Widget->GetWidgetFromName(TEXT("ProgressBar_Life"))))
+			{
+				Progress->SetPercent(ratio);
+			}
+		}
+	}
 }
 
 // Called every frame
 void ACloneCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	LifeRemaining -= DeltaTime;
+
+	UpdateLifeBar(LifeRemaining / LifeDuration);
+
+	if (LifeRemaining <= 0.f)
+		DestroyClone();	
+
+	DrawDebugBox(GetWorld(), CloneWidget->GetComponentLocation(), FVector(10.f), FColor::Green, false, 2.f);
+
 
 }
 
