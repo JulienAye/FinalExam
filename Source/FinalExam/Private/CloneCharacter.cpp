@@ -60,8 +60,20 @@ void ACloneCharacter::Tick(float DeltaTime)
 	if (LifeRemaining <= 0.f)
 		DestroyClone();	
 
-	DrawDebugBox(GetWorld(), CloneWidget->GetComponentLocation(), FVector(10.f), FColor::Green, false, 2.f);
+	//DrawDebugBox(GetWorld(), CloneWidget->GetComponentLocation(), FVector(10.f), FColor::Green, false, 2.f);
 
+	if (APlayerController* Player = GetWorld()->GetFirstPlayerController())
+	{
+		if (Player->PlayerCameraManager)
+		{
+			FVector CameraLocation = Player->PlayerCameraManager->GetCameraLocation();
+			FVector WidgetLocation = CloneWidget->GetComponentLocation();
+			FVector Direction = CameraLocation - WidgetLocation;
+			FRotator LookAtRotation = FRotationMatrix::MakeFromX(Direction).Rotator();
+
+			CloneWidget->SetWorldRotation(LookAtRotation);
+		}
+	}
 
 }
 

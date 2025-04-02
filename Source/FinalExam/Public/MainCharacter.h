@@ -13,6 +13,7 @@ class UInputAction;
 class UInputMappingContext;
 class ACloneCharacter;
 struct FInputActionValue;
+class UPlayerHUDWidget;
 
 UCLASS()
 class FINALEXAM_API AMainCharacter : public ACharacter
@@ -29,6 +30,10 @@ public:
 	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USpringArmComponent* SpringArm;*/
 
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UPlayerHUDWidget> PlayerHUDClass;
+
+	UPlayerHUDWidget* PlayerHUD;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -45,7 +50,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clone")
 	int32 AvailableClones = 1; //At start the player will be able to create only 1 clone
-
 
 	float valueAim = 1;
 

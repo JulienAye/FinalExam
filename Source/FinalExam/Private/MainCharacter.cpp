@@ -9,6 +9,7 @@
 #include "CloneCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "PlayerHUDWidget.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -16,9 +17,9 @@ AMainCharacter::AMainCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(RootComponent);
-	Camera->SetRelativeLocation(FVector(0.f, 0.f, 64.f)); 
+	Camera->SetRelativeLocation(FVector(0.f, 0.f, 64.f));
 	Camera->bUsePawnControlRotation = true;
-	
+
 	GetMesh()->SetOwnerNoSee(true);
 
 	bUseControllerRotationYaw = true;
@@ -31,8 +32,6 @@ AMainCharacter::AMainCharacter()
 	ArmsMesh->CastShadow = false;
 	ArmsMesh->SetRelativeLocation(FVector(0.f, 0.f, -140.f));
 	ArmsMesh->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));*/
-
-
 }
 
 // Called when the game starts or when spawned
@@ -40,6 +39,17 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	CurrentHp = MaxHp;
+
+	if (PlayerHUDClass)
+	{
+		PlayerHUD = CreateWidget<UPlayerHUDWidget>(GetWorld(), PlayerHUDClass);
+
+		if (PlayerHUD)
+		{
+			PlayerHUD->AddToViewport();
+			PlayerHUD->SetCloneCount(AvailableClones);
+		}
+	}
 
 }
 
@@ -152,7 +162,7 @@ void AMainCharacter::UseInteract(const FInputActionValue& Value)
 
 void AMainCharacter::SpawnClone(const FInputActionValue& Value)
 {
-	if (AvailableClones <= 0) 
+	if (AvailableClones <= 0)
 		return;
 
 	if (CloneClass)
@@ -168,6 +178,7 @@ void AMainCharacter::SpawnClone(const FInputActionValue& Value)
 		{
 			AvailableClones--;
 			ActiveClones.Add(Clone);//I add the clone to my ActiveClones array, will be easier in the future to manage their interactions or delete them
+			PlayerHUD->SetCloneCount(AvailableClones); //Update HUD
 		}
 	}
 }
@@ -206,4 +217,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void AMainCharacter::NotifyCloneDestruction()
 {
 	AvailableClones++;
+	if (PlayerHUD)
+		PlayerHUD->SetCloneCount(AvailableClones);
+
 }
