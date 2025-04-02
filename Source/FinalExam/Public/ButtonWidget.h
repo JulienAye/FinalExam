@@ -4,25 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CloneWidget.generated.h"
+#include "ButtonWidget.generated.h"
 
 class UProgressBar;
 
 UCLASS()
-class FINALEXAM_API UCloneWidget : public UUserWidget
+class FINALEXAM_API UButtonWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
 
-	UFUNCTION(BlueprintCallable)
-	void SetLifeRatio(float Ratio);
+	UFUNCTION()
+	void SetProgress(float Ratio);
 
 protected:
-
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(meta = (BindWidget))
-	UProgressBar* ProgressBar_Life;
-
+	UProgressBar* ProgressBar;
 };

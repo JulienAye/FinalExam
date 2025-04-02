@@ -25,8 +25,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> CloneWidgetClass;
-	
-	void UpdateLifeBar(float ratio);
 		 
 protected:
 	// Called when the game starts or when spawned

@@ -3,9 +3,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "InteractableInterface.h"
+#include "Components/WidgetComponent.h"
+#include "Blueprint/UserWidget.h"
+#include "Components/StaticMeshComponent.h"
 #include "InteractiveButton.generated.h"
 
 class ADoor;
+class UButtonWidget;
 
 UCLASS()
 class FINALEXAM_API AInteractiveButton : public AActor, public IInteractableInterface
@@ -15,7 +19,7 @@ class FINALEXAM_API AInteractiveButton : public AActor, public IInteractableInte
 public:
 	AInteractiveButton();
 
-	//virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override;
 
 	virtual void Interact(ACharacter* InteractingCharacter) override;
 	bool IsActivated() const override { return bIsActivated; }
@@ -43,8 +47,19 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Door")
 	TArray<ADoor*> LinkedDoors; //To store the actors that will be affected by the button
 
-	UPROPERTY(EditAnywhere, Category = "Button|Sound")
+	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundBase* InteractSound;
 
 	FTimerHandle ResetTimerHandle;
+
+	UPROPERTY(VisibleAnywhere, Category = "UI")
+	UWidgetComponent* ButtonUI;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UUserWidget> ButtonWidgetClass;
+
+	UButtonWidget* TimerWidget = nullptr;
+
+	float TimerDuration = 5.f;
+	float TimeRemaining;
 };

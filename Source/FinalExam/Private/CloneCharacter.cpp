@@ -6,6 +6,7 @@
 #include "InteractableInterface.h"
 #include "Components/WidgetComponent.h"
 #include "Components/ProgressBar.h"
+#include "CloneWidget.h"
 
 // Sets default values
 ACloneCharacter::ACloneCharacter()
@@ -36,23 +37,10 @@ void ACloneCharacter::BeginPlay()
 {	
 	Super::BeginPlay();
 
-	if (CloneWidgetClass)
+	UCloneWidget* LifeWidget = Cast<UCloneWidget>(CloneWidget->GetUserWidgetObject());
+	if (LifeWidget)
 	{
-		CloneWidget->SetWidgetClass(CloneWidgetClass);
-	}
-}
-
-void ACloneCharacter::UpdateLifeBar(float ratio)
-{
-	if (CloneWidget)
-	{
-		if (UUserWidget* Widget = CloneWidget->GetUserWidgetObject())
-		{
-			if (UProgressBar* Progress = Cast<UProgressBar>(Widget->GetWidgetFromName(TEXT("ProgressBar_Life"))))
-			{
-				Progress->SetPercent(ratio);
-			}
-		}
+		LifeWidget->SetLifeRatio(LifeRemaining / LifeDuration);
 	}
 }
 
@@ -63,7 +51,11 @@ void ACloneCharacter::Tick(float DeltaTime)
 
 	LifeRemaining -= DeltaTime;
 
-	UpdateLifeBar(LifeRemaining / LifeDuration);
+	UCloneWidget* LifeWidget = Cast<UCloneWidget>(CloneWidget->GetUserWidgetObject());
+	if (LifeWidget)
+	{
+		LifeWidget->SetLifeRatio(LifeRemaining / LifeDuration);
+	}
 
 	if (LifeRemaining <= 0.f)
 		DestroyClone();	
