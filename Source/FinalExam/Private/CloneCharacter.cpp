@@ -42,6 +42,14 @@ void ACloneCharacter::BeginPlay()
 	{
 		LifeWidget->SetLifeRatio(LifeRemaining / LifeDuration);
 	}
+
+	DissolveMaterial = GetMesh()->CreateAndSetMaterialInstanceDynamic(0);//Take the first material from the mesh (it only have one)
+
+	if (DissolveMaterial)
+	{
+		DissolveMaterial->SetScalarParameterValue(TEXT("Dissolve"), 0.f);
+	}
+
 }
 
 // Called every frame
@@ -73,6 +81,12 @@ void ACloneCharacter::Tick(float DeltaTime)
 
 			CloneWidget->SetWorldRotation(LookAtRotation);
 		}
+	}
+
+	if (DissolveMaterial)
+	{
+		float DissolveRatio = FMath::Clamp(1.f - (LifeRemaining / LifeDuration), 0.f, 1.f);
+		DissolveMaterial->SetScalarParameterValue(TEXT("Dissolve"), DissolveRatio);
 	}
 
 }

@@ -25,6 +25,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> CloneWidgetClass;
+
+	UPROPERTY(VisibleAnywhere, Category = "Material")
+	UMaterialInstanceDynamic* DissolveMaterial;
+
 		 
 protected:
 	// Called when the game starts or when spawned
