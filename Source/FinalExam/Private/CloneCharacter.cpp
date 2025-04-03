@@ -5,8 +5,10 @@
 #include "MainCharacter.h"
 #include "InteractableInterface.h"
 #include "Components/WidgetComponent.h"
+#include "NiagaraComponent.h"
 #include "Components/ProgressBar.h"
 #include "CloneWidget.h"
+
 
 // Sets default values
 ACloneCharacter::ACloneCharacter()
@@ -30,6 +32,10 @@ ACloneCharacter::ACloneCharacter()
 	CloneWidget->SetPivot(FVector2D(0.5f, 0.5f));
 	CloneWidget->SetVisibility(true);
 	CloneWidget->SetHiddenInGame(false);
+
+	CloneDissolveEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("CloneDissolveEffect"));
+	CloneDissolveEffect->SetupAttachment(RootComponent);
+	CloneDissolveEffect->bAutoActivate = false;
 }
 
 // Called when the game starts or when spawned
@@ -48,6 +54,8 @@ void ACloneCharacter::BeginPlay()
 	if (DissolveMaterial)
 	{
 		DissolveMaterial->SetScalarParameterValue(TEXT("Dissolve"), 0.f);
+
+		
 	}
 
 }
@@ -65,10 +73,17 @@ void ACloneCharacter::Tick(float DeltaTime)
 		LifeWidget->SetLifeRatio(LifeRemaining / LifeDuration);
 	}
 
-	if (LifeRemaining <= 0.f)
-		DestroyClone();	
+	if (LifeRemaining <= 1.5f && !bHasStartedDissolving)
+	{
+		bHasStartedDissolving = true;
+		CloneDissolveEffect->Activate(true);
+	}
 
-	//DrawDebugBox(GetWorld(), CloneWidget->GetComponentLocation(), FVector(10.f), FColor::Green, false, 2.f);
+	if (DissolveMaterial)
+	{
+		float DissolveRatio = FMath::Clamp(1.f - (LifeRemaining / LifeDuration), 0.f, 1.f);
+		DissolveMaterial->SetScalarParameterValue(TEXT("Dissolve"), DissolveRatio);
+	}
 
 	if (APlayerController* Player = GetWorld()->GetFirstPlayerController())
 	{
@@ -83,12 +98,8 @@ void ACloneCharacter::Tick(float DeltaTime)
 		}
 	}
 
-	if (DissolveMaterial)
-	{
-		float DissolveRatio = FMath::Clamp(1.f - (LifeRemaining / LifeDuration), 0.f, 1.f);
-		DissolveMaterial->SetScalarParameterValue(TEXT("Dissolve"), DissolveRatio);
-	}
-
+	if (LifeRemaining <= 0.f)
+		DestroyClone();
 }
 
 // Called to bind functionality to input
@@ -125,8 +136,7 @@ void ACloneCharacter::DestroyClone()
 			Player->NotifyCloneDestruction(); //Notify the player so he can spawn another clone
 		}
 	}
-
-	//Visual effect to be implemented
+	
 	Destroy();
 }
 

@@ -10,6 +10,7 @@
 #include "CloneCharacter.generated.h"
 
 class UProgressBar;
+class UNiagaraComponent;
 
 UCLASS()
 class FINALEXAM_API ACloneCharacter : public ACharacter
@@ -28,6 +29,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Material")
 	UMaterialInstanceDynamic* DissolveMaterial;
+
+	UPROPERTY(VisibleAnywhere, Category = "VFX")
+	UNiagaraComponent* CloneDissolveEffect;
 
 		 
 protected:
@@ -65,5 +69,7 @@ private:
 
 	float LifeDuration = 7.f;
 	float LifeRemaining;
+
+	bool bHasStartedDissolving = false;
 
 };
