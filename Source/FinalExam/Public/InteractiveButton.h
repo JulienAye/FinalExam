@@ -29,10 +29,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction")
 	bool bIsActivated = false;
 
-	UPROPERTY(EditAnywhere, Category = "Button|Material")
+	UPROPERTY(EditAnywhere, Category = "Material")
 	UMaterialInterface* ActivatedMaterial;
 
-	UPROPERTY(EditAnywhere, Category = "Button|Material")
+	UPROPERTY(EditAnywhere, Category = "Material")
 	UMaterialInterface* DeactivatedMaterial;
 
 	void ResetButton();

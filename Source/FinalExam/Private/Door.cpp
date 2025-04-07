@@ -3,6 +3,7 @@
 
 #include "Door.h"
 #include "InteractiveButton.h"
+#include "PressurePlate.h"
 
 // Sets default values
 ADoor::ADoor()
@@ -41,9 +42,19 @@ void ADoor::RegisterButton(AInteractiveButton* Button)
 	}
 }
 
+void ADoor::RegisterPressurePlate(APressurePlate* PressurePlate)
+{
+	if (PressurePlate && !LinkedPressurePlates.Contains(PressurePlate))
+	{
+		LinkedPressurePlates.Add(PressurePlate);
+	}
+}
+
+
 void ADoor::EvaluateDoorCondition()
 {
 	int32 ActivatedButtons = 0;
+	int32 ActivatedPressurePlates = 0;
 
 	for (AInteractiveButton* Button : LinkedButtons)
 	{
@@ -53,7 +64,15 @@ void ADoor::EvaluateDoorCondition()
 		}
 	}
 
-	if (ActivatedButtons >= RequiredButtons)
+	for (APressurePlate* PressurePlate : LinkedPressurePlates)
+	{
+		if (PressurePlate && PressurePlate->bIsActivated)
+		{
+			ActivatedPressurePlates++;
+		}
+	}
+
+	if (ActivatedButtons >= RequiredButtons && ActivatedPressurePlates >= RequiredPressurePlates)
 	{
 		OpenDoor();
 	}

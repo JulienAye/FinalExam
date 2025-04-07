@@ -7,6 +7,7 @@
 #include "Door.generated.h"
 
 class AInteractiveButton;
+class APressurePlate;
 
 UCLASS()
 class FINALEXAM_API ADoor : public AActor
@@ -26,16 +27,23 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void RegisterButton(class AInteractiveButton* Button);
+	void RegisterPressurePlate(class APressurePlate* PressurePlate);
 	void EvaluateDoorCondition();
 
 	void OpenDoor();
 	void CloseDoor();
 
 	UPROPERTY(EditAnywhere, Category = "Door")
-	int32 RequiredButtons = 1; //Because it will need at least 1 button to open
+	int32 RequiredButtons; 
+
+	UPROPERTY(EditAnywhere, Category = "PressurePlate")
+	int32 RequiredPressurePlates;
 
 	UPROPERTY(EditAnywhere, Category = "Door")
 	TArray<AInteractiveButton*> LinkedButtons;
+
+	UPROPERTY(EditAnywhere, Category = "PressurePlate")
+	TArray<APressurePlate*> LinkedPressurePlates;
 
 	bool bIsOpen;
 
