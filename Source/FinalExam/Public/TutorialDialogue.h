@@ -17,6 +17,9 @@ struct FTutorialDialogueLine
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float DisplayDuration = 3.f;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	bool bWaitForEvent = false;
 };
 
 UCLASS()

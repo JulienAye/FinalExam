@@ -3,7 +3,7 @@
 
 #include "PlayerHUDWidget.h"
 #include "Components/TextBlock.h"
-#include "MainUserWidget.h"
+
 void UPlayerHUDWidget::NativeConstruct()
 {
 	Super::NativeConstruct();

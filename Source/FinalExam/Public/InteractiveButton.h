@@ -10,6 +10,7 @@
 
 class ADoor;
 class UButtonWidget;
+class ATutorielManager;
 
 UCLASS()
 class FINALEXAM_API AInteractiveButton : public AActor, public IInteractableInterface
@@ -62,4 +63,9 @@ private:
 
 	float TimerDuration = 5.f;
 	float TimeRemaining;
+
+	UPROPERTY(EditAnywhere, Category = "Tutorial")
+	ATutorielManager* TutorielManager;
+
+	bool bHasTriggeredTutorialEvent = false;
 };

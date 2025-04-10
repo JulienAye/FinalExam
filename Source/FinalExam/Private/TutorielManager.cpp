@@ -43,6 +43,11 @@ void ATutorielManager::InitializeTutorial() //To be called when the player is re
 	}
 }
 
+void ATutorielManager::TriggerEvent()
+{
+	OnTutorialEventTriggered.Broadcast();
+}
+
 void ATutorielManager::ProceedNextStep()
 {
 	if (CurrentStep >= TutorialSteps.Num())
@@ -56,7 +61,12 @@ void ATutorielManager::ProceedNextStep()
 	{
 		const FTutorialDialogueLine& Line = CurrentDialogue->DialogueLines[CurrentLineIndex];
 		TutorialText->SetText(Line.DialogueText);
-		//UE_LOG(LogTemp, Log, TEXT("Displaying: %s"), *Line.DialogueText.ToString());
+
+		if (Line.bWaitForEvent)
+		{
+			OnTutorialEventTriggered.AddDynamic(this, &ATutorielManager::ContinueDialogue);
+			return; //It will close the loop and we will have to call ContinueDialogue function somewhere else
+		}
 		GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &ATutorielManager::ProceedNextStep, Line.DisplayDuration, false);
 		CurrentLineIndex++;
 
@@ -67,6 +77,13 @@ void ATutorielManager::ProceedNextStep()
 		CurrentLineIndex = 0;
 		ProceedNextStep();
 	}
+}
+
+void ATutorielManager::ContinueDialogue()
+{
+	OnTutorialEventTriggered.RemoveDynamic(this, &ATutorielManager::ContinueDialogue);
+	CurrentLineIndex++;
+	ProceedNextStep();
 }
 
 // Called every frame

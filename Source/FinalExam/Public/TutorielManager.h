@@ -10,6 +10,9 @@
 
 class UTutorialDialogue;
 class UPlayerHUDWidget;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTutorialEventTriggered);
+
 UCLASS()
 class FINALEXAM_API ATutorielManager : public AActor
 {
@@ -36,10 +39,15 @@ protected:
 
 
 	void ProceedNextStep();
+	void ContinueDialogue();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void StartTutorial();
 	void InitializeTutorial();
+
+	void TriggerEvent();
+
+	FOnTutorialEventTriggered OnTutorialEventTriggered;
 };

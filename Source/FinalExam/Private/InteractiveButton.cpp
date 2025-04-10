@@ -4,6 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/WidgetComponent.h"
 #include "ButtonWidget.h"
+#include "TutorielManager.h"
 #include "Door.h"
 
 AInteractiveButton::AInteractiveButton()
@@ -12,7 +13,7 @@ AInteractiveButton::AInteractiveButton()
 
 	ButtonMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ButtonMesh"));
 	RootComponent = ButtonMesh;
-		
+
 	ButtonUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("ButtonUI"));
 	ButtonUI->SetupAttachment(RootComponent);
 	ButtonUI->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
@@ -29,7 +30,7 @@ void AInteractiveButton::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bIsActivated && TimeRemaining > 0.f) 
+	if (bIsActivated && TimeRemaining > 0.f)
 	{
 		TimeRemaining -= DeltaTime;
 		if (TimerWidget)
@@ -96,6 +97,12 @@ void AInteractiveButton::Interact(ACharacter* InteractingCharacter)
 	if (InteractSound) //To be implemented
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, InteractSound, GetActorLocation());
+	}
+
+	if (!bHasTriggeredTutorialEvent && TutorielManager)
+	{
+		TutorielManager->TriggerEvent();
+		bHasTriggeredTutorialEvent = true;
 	}
 
 	for (ADoor* Door : LinkedDoors)
