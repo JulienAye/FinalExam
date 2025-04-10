@@ -17,10 +17,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCloneCount(int32 Count);
 
-protected:
-	virtual void NativeConstruct() override;
-	
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Text_CloneCount;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* Text_TutorialLine;
+
+protected:
+	virtual void NativeConstruct() override;
+
 	
 };

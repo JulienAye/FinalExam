@@ -9,7 +9,7 @@
 #include "TutorielManager.generated.h"
 
 class UTutorialDialogue;
-
+class UPlayerHUDWidget;
 UCLASS()
 class FINALEXAM_API ATutorielManager : public AActor
 {
@@ -30,6 +30,10 @@ protected:
 	int32 CurrentLineIndex = 0;
 	FTimerHandle DialogueTimerHandle;
 
+	UPlayerHUDWidget* TutorialWidget = nullptr;
+
+	UTextBlock* TutorialText = nullptr;
+
 
 	void ProceedNextStep();
 
@@ -37,5 +41,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void StartTutorial();
-
+	void InitializeTutorial();
 };

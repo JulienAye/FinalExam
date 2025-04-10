@@ -3,11 +3,20 @@
 
 #include "PlayerHUDWidget.h"
 #include "Components/TextBlock.h"
-
+#include "MainUserWidget.h"
 void UPlayerHUDWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	SetCloneCount(0);
+
+	//if(PlayerHUDClass)
+	//{
+	//	PlayerHUD = CreateWidget<UPlayerHUDWidget>(GetWorld(), PlayerHUDClass);
+	//	if (PlayerHUD)
+	//	{
+	//		PlayerHUD->AddToViewport();
+	//	}
+	//}
 }
 
 void UPlayerHUDWidget::SetCloneCount(int32 Count)

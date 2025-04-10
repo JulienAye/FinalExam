@@ -3,6 +3,8 @@
 
 #include "TutorielManager.h"
 #include "TutorialDialogue.h"
+#include "MainCharacter.h"
+#include "PlayerHUDWidget.h"
 
 // Sets default values
 ATutorielManager::ATutorielManager()
@@ -17,10 +19,29 @@ ATutorielManager::ATutorielManager()
 void ATutorielManager::BeginPlay()
 {
 	Super::BeginPlay();
-	StartTutorial();
+
+	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &ATutorielManager::InitializeTutorial, 0.2f, false);	
 }
 
-
+void ATutorielManager::InitializeTutorial() //To be called when the player is ready, otherwise is null
+{
+	if (APlayerController* PC = Cast<APlayerController>(GetWorld()->GetFirstPlayerController()))
+	{
+		if (AMainCharacter* Player = Cast<AMainCharacter>(PC->GetPawn()))
+		{
+			if (Player->PlayerHUD)
+			{
+				TutorialWidget = Player->PlayerHUD;
+				TutorialText = TutorialWidget->Text_TutorialLine;
+				StartTutorial();
+			}
+			else
+			{
+				GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &ATutorielManager::InitializeTutorial, 0.1f, false);
+			}
+		}
+	}
+}
 
 void ATutorielManager::ProceedNextStep()
 {
@@ -34,17 +55,16 @@ void ATutorielManager::ProceedNextStep()
 	if (CurrentLineIndex < CurrentDialogue->DialogueLines.Num())
 	{
 		const FTutorialDialogueLine& Line = CurrentDialogue->DialogueLines[CurrentLineIndex];
-
-		UE_LOG(LogTemp, Log, TEXT("Displaying: %s"), *Line.DialogueText.ToString());
+		TutorialText->SetText(Line.DialogueText);
+		//UE_LOG(LogTemp, Log, TEXT("Displaying: %s"), *Line.DialogueText.ToString());
 		GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &ATutorielManager::ProceedNextStep, Line.DisplayDuration, false);
 		CurrentLineIndex++;
 
 	}
-	else 
+	else
 	{
 		CurrentStep++;
 		CurrentLineIndex = 0;
-
 		ProceedNextStep();
 	}
 }
@@ -62,4 +82,5 @@ void ATutorielManager::StartTutorial()
 	CurrentLineIndex = 0;
 	ProceedNextStep();
 }
+
 
