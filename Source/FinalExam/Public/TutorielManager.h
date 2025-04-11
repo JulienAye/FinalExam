@@ -39,6 +39,8 @@ protected:
 
 
 	void ProceedNextStep();
+
+	UFUNCTION()
 	void ContinueDialogue();
 
 public:	
@@ -47,6 +49,7 @@ public:
 	void StartTutorial();
 	void InitializeTutorial();
 
+	//UFUNCTION()
 	void TriggerEvent();
 
 	FOnTutorialEventTriggered OnTutorialEventTriggered;
