@@ -183,6 +183,24 @@ void AMainCharacter::SpawnClone(const FInputActionValue& Value)
 	}
 }
 
+void AMainCharacter::TeleportClone(const FInputActionValue& Value)
+{
+	if (ActiveClones.Num() == 0)
+		return;
+
+	ACloneCharacter* LastClone = ActiveClones.Last(); //I choose to teleport to the last clone spawned, easier to understand for the player when he can spawn 2+ clones imo
+
+	if (!LastClone || !IsValid(LastClone))
+		return;
+
+	APlayerController* Player = Cast<APlayerController>(GetController());
+	SetActorLocation(LastClone->GetActorLocation());
+	LastClone->Destroy();
+	ActiveClones.Pop();
+	NotifyCloneDestruction();
+
+}
+
 // Called every frame
 void AMainCharacter::Tick(float DeltaTime)
 {
@@ -211,6 +229,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AMainCharacter::UseInteract);
 		EnhancedInputComponent->BindAction(SpawnCloneAction, ETriggerEvent::Triggered, this, &AMainCharacter::SpawnClone);
+		EnhancedInputComponent->BindAction(TeleportCloneAction, ETriggerEvent::Triggered, this, &AMainCharacter::TeleportClone);
 	}
 }
 

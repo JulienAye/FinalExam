@@ -44,6 +44,7 @@ protected:
 	void Sprint(const FInputActionValue& Value);
 	void UseInteract(const FInputActionValue& Value);
 	void SpawnClone(const FInputActionValue& Value);
+	void TeleportClone(const FInputActionValue& Value);
 
 	int32 MaxHp = 1;
 	int32 CurrentHp;
@@ -85,6 +86,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	UInputAction* SpawnCloneAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* TeleportCloneAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprint", meta = (AllowPrivateAccess = "true"))
 	bool bSprint = false;
