@@ -56,24 +56,26 @@ void ABobbyActor::MoveToLocation(const FVector& Location)
 	const float Duration = 1.f;
 
 	float ElapsedTime = 0.f;
-	const float Step = 0.02f;
+	const float Step = 0.1f;
 
 	FTimerHandle MoveHandle;
 
-	GetWorldTimerManager().SetTimer(MoveHandle, [this, StartLocation, EndLocation, Duration, Step, ElapsedTime]() mutable { //mutable to modify ElapsedTime
-		ElapsedTime += Step;
-		float Alpha = FMath::Clamp(ElapsedTime / Duration, 0.f, 1.f); //So Alpha max = 1
-		FVector NewLocation = FMath::Lerp(StartLocation, EndLocation, Alpha);
-		SetActorLocation(NewLocation);
+	//GetWorldTimerManager().SetTimer(MoveHandle, [this, StartLocation, EndLocation, Duration, Step, ElapsedTime]() mutable { //mutable to modify ElapsedTime
+	//	ElapsedTime += Step;
+	//	float Alpha = FMath::Clamp(ElapsedTime / Duration, 0.f, 1.f); //So Alpha max = 1
+	//	FVector NewLocation = FMath::Lerp(StartLocation, EndLocation, Alpha);
+	//	SetActorLocation(NewLocation);
 
-		if (Alpha >= 1.f)
-		{
-			if (UBobbyAnimInstance* BobbyAnim = Cast<UBobbyAnimInstance>(BobbyMesh->GetAnimInstance()))
-			{
-				BobbyAnim->bIsMoving = false;
-			}
-			//GetWorldTimerManager().ClearTimer(MoveHandle);
-		}
-		}, Step, true);
+	//	if (Alpha >= 1.f)
+	//	{
+	//		if (UBobbyAnimInstance* BobbyAnim = Cast<UBobbyAnimInstance>(BobbyMesh->GetAnimInstance()))
+	//		{
+	//			BobbyAnim->bIsMoving = false;
+	//		}
+	//		//GetWorldTimerManager().ClearTimer(MoveHandle);
+	//	}
+	//	}, Step, true);
+
+	SetActorLocation(EndLocation);
 }
 

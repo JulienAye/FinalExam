@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include"MainCharacter.h"
+#include "TutorielManager.h"
 
 // Sets default values
 ACloneBonus::ACloneBonus()
@@ -45,6 +46,11 @@ void ACloneBonus::OnOverlapBegin(
         AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
         if (Player)
         {
+            if (!bHasTriggeredTutorialEvent && TutorielManager)
+            {
+                TutorielManager->TriggerEvent();
+                bHasTriggeredTutorialEvent = true;
+            }
             Player->NotifyCloneDestruction();
             Destroy();
         }

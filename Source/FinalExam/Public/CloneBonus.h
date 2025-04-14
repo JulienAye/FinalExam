@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "CloneBonus.generated.h"
 
+class ATutorielManager;
+
 UCLASS()
 class FINALEXAM_API ACloneBonus : public AActor
 {
@@ -35,7 +37,10 @@ protected:
 		const FHitResult& SweepResult
 	);
 
+	UPROPERTY(EditAnywhere, Category = "Tutorial")
+	ATutorielManager* TutorielManager;
 
+	bool bHasTriggeredTutorialEvent = false;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

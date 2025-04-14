@@ -38,6 +38,10 @@ public:
 
 	void ResetButton();
 
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Door") //To modify button timer if needed
+	float TimerDuration = 5.f;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -61,7 +65,6 @@ private:
 
 	UButtonWidget* TimerWidget = nullptr;
 
-	float TimerDuration = 5.f;
 	float TimeRemaining;
 
 	UPROPERTY(EditAnywhere, Category = "Tutorial")
