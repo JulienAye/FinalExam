@@ -20,6 +20,18 @@ struct FTutorialDialogueLine
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	bool bWaitForEvent = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bTriggerHello = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bTriggerMove = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FVector MoveTarget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 MoveToTargetIndex = -1;
 };
 
 UCLASS()

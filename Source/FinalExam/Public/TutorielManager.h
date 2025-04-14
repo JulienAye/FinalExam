@@ -10,6 +10,8 @@
 
 class UTutorialDialogue;
 class UPlayerHUDWidget;
+class ABobbyActor;
+class ATargetPoint;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTutorialEventTriggered);
 
@@ -43,6 +45,11 @@ protected:
 	UFUNCTION()
 	void ContinueDialogue();
 
+	UPROPERTY(EditAnywhere)
+	ABobbyActor* Bobby;
+
+	UPROPERTY(EditAnywhere,Category = "Bobby")
+	TArray<ATargetPoint*> TargetPoints;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
