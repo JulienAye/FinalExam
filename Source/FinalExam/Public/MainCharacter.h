@@ -49,7 +49,7 @@ protected:
 	int32 CurrentHp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clone")
-	int32 AvailableClones = 1; //At start the player will be able to create only 1 clone
+	int32 AvailableClones = 0; //At start the player will be able to create only 1 clone
 
 	float valueAim = 1;
 
@@ -59,6 +59,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+
 
 	UFUNCTION()
 	void NotifyCloneDestruction();
