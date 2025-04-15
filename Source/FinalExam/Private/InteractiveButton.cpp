@@ -6,6 +6,7 @@
 #include "ButtonWidget.h"
 #include "TutorielManager.h"
 #include "Door.h"
+#include "ObstacleWall.h"
 
 AInteractiveButton::AInteractiveButton()
 {
@@ -111,6 +112,14 @@ void AInteractiveButton::Interact(ACharacter* InteractingCharacter)
 		{
 
 			Door->EvaluateDoorCondition();
+		}
+	}
+
+	for (AObstacleWall* Wall : LinkedWalls)
+	{
+		if (Wall)
+		{
+			Wall->EvaluateConditions();
 		}
 	}
 

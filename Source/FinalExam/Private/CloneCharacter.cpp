@@ -53,11 +53,8 @@ void ACloneCharacter::BeginPlay()
 
 	if (DissolveMaterial)
 	{
-		DissolveMaterial->SetScalarParameterValue(TEXT("Dissolve"), 0.f);
-
-		
+		DissolveMaterial->SetScalarParameterValue(TEXT("Dissolve"), 0.f);		
 	}
-
 }
 
 // Called every frame
@@ -133,7 +130,7 @@ void ACloneCharacter::DestroyClone()
 		AMainCharacter* Player = Cast<AMainCharacter>(OwnerCharacter);
 		if (Player)
 		{
-			Player->NotifyCloneDestruction(); //Notify the player so he can spawn another clone
+			Player->NotifyCloneDestruction(this); //Notify the player so he can spawn another clone
 		}
 	}
 	

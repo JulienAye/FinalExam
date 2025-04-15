@@ -11,6 +11,7 @@
 class ADoor;
 class UButtonWidget;
 class ATutorielManager;
+class AObstacleWall;
 
 UCLASS()
 class FINALEXAM_API AInteractiveButton : public AActor, public IInteractableInterface
@@ -69,6 +70,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Tutorial")
 	ATutorielManager* TutorielManager;
+
+	UPROPERTY(EditAnywhere)
+	TArray<AObstacleWall*> LinkedWalls;
 
 	bool bHasTriggeredTutorialEvent = false;
 };

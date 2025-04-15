@@ -49,8 +49,7 @@ protected:
 	int32 MaxHp = 1;
 	int32 CurrentHp;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clone")
-	int32 AvailableClones = 0; //At start the player will be able to create only 1 clone
+	
 
 	float valueAim = 1;
 
@@ -61,10 +60,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clone")
+	int32 AvailableClones = 0; 
 
 	UFUNCTION()
-	void NotifyCloneDestruction();
+	void NotifyCloneDestruction(ACloneCharacter* DestroyedClone);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;

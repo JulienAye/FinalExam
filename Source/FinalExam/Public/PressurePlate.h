@@ -7,6 +7,7 @@
 class UBoxComponent;
 class UStaticMeshComponent;
 class ADoor;
+class AObstacleWall;
 
 UCLASS()
 class FINALEXAM_API APressurePlate : public AActor
@@ -44,4 +45,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Material")
 	UMaterialInterface* ActiveMaterial;
+
+	UPROPERTY(EditAnywhere)
+	TArray<AObstacleWall*> LinkedWalls;
 };

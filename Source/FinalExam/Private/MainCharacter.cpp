@@ -188,16 +188,17 @@ void AMainCharacter::TeleportClone(const FInputActionValue& Value)
 	if (ActiveClones.Num() == 0)
 		return;
 
-	ACloneCharacter* LastClone = ActiveClones.Last(); //I choose to teleport to the last clone spawned, easier to understand for the player when he can spawn 2+ clones imo
+	ACloneCharacter* FirstClone = ActiveClones[0]; //We get the first clone spawned
 
-	if (!LastClone || !IsValid(LastClone))
+	if (!FirstClone || !IsValid(FirstClone))
 		return;
 
-	APlayerController* Player = Cast<APlayerController>(GetController());
-	SetActorLocation(LastClone->GetActorLocation());
-	LastClone->Destroy();
-	ActiveClones.Pop();
-	NotifyCloneDestruction();
+	//APlayerController* Player = Cast<APlayerController>(GetController());
+
+	SetActorLocation(FirstClone->GetActorLocation());
+	ActiveClones.RemoveAt(0);
+	NotifyCloneDestruction(FirstClone);
+	FirstClone->Destroy();
 
 }
 
@@ -233,8 +234,13 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	}
 }
 
-void AMainCharacter::NotifyCloneDestruction()
+void AMainCharacter::NotifyCloneDestruction(ACloneCharacter* DestroyedClone)
 {
+	if (DestroyedClone)
+	{
+		ActiveClones.Remove(DestroyedClone);
+	}
+
 	AvailableClones++;
 	if (PlayerHUD)
 		PlayerHUD->SetCloneCount(AvailableClones);

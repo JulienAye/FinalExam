@@ -7,6 +7,7 @@
 #include "CloneCharacter.h"
 #include "MainCharacter.h"
 #include "Door.h"
+#include "ObstacleWall.h"
 
 // Sets default values
 APressurePlate::APressurePlate()
@@ -40,6 +41,14 @@ void APressurePlate::BeginPlay()
 			Door->RegisterPressurePlate(this); //Mandatory to synchronize all buttons with the door
 		}
 	}
+
+	for (AObstacleWall* Wall : LinkedWalls)
+	{
+		if (Wall)
+		{
+			Wall->RegisterPressurePlate(this);
+		}
+	}
 	
 }
 
@@ -55,6 +64,14 @@ void APressurePlate::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
 			{
 				
 				Door->EvaluateDoorCondition();
+			}
+		}
+
+		for (AObstacleWall* Wall : LinkedWalls)
+		{
+			if (Wall)
+			{
+				Wall->EvaluateConditions();
 			}
 		}
 	}
@@ -73,6 +90,14 @@ void APressurePlate::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* O
 			{
 				Door->EvaluateDoorCondition();
 				
+			}
+		}
+
+		for (AObstacleWall* Wall : LinkedWalls)
+		{
+			if (Wall)
+			{
+				Wall->EvaluateConditions();
 			}
 		}
 	}

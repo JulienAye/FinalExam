@@ -51,7 +51,7 @@ void ACloneBonus::OnOverlapBegin(
                 TutorielManager->TriggerEvent();
                 bHasTriggeredTutorialEvent = true;
             }
-            Player->NotifyCloneDestruction();
+            Player->AvailableClones++;
             Destroy();
         }
     }
