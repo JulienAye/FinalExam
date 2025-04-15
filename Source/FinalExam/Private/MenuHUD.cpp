@@ -2,4 +2,16 @@
 
 
 #include "MenuHUD.h"
+#include "Blueprint/UserWidget.h"
 
+void AMenuHUD::BeginPlay()
+{
+	if (MainMenuWidgetClass)
+	{
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuWidgetClass);
+		if (CurrentWidget)
+		{
+			CurrentWidget->AddToViewport();
+		}
+	}
+}

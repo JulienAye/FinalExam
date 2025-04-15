@@ -8,6 +8,7 @@
 #include "MainCharacter.h"
 #include "Door.h"
 #include "ObstacleWall.h"
+#include "TutorielManager.h"
 
 // Sets default values
 APressurePlate::APressurePlate()
@@ -62,7 +63,11 @@ void APressurePlate::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
 		{
 			if (Door && !Door->bIsOpen)
 			{
-				
+				if (!bHasTriggeredTutorialEvent && TutorielManager) 
+				{
+					TutorielManager->TriggerEvent();
+					bHasTriggeredTutorialEvent = true;
+				}
 				Door->EvaluateDoorCondition();
 			}
 		}

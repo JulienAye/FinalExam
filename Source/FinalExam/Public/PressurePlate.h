@@ -8,6 +8,7 @@ class UBoxComponent;
 class UStaticMeshComponent;
 class ADoor;
 class AObstacleWall;
+class ATutorielManager;
 
 UCLASS()
 class FINALEXAM_API APressurePlate : public AActor
@@ -48,4 +49,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TArray<AObstacleWall*> LinkedWalls;
+
+	UPROPERTY(EditAnywhere, Category = "Tutorial")
+	ATutorielManager* TutorielManager;
+
+	bool bHasTriggeredTutorialEvent = false;
 };

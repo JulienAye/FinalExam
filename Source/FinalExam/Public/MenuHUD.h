@@ -13,5 +13,14 @@ UCLASS()
 class FINALEXAM_API AMenuHUD : public AHUD
 {
 	GENERATED_BODY()
-	
+
+protected:
+	virtual void BeginPlay() override;
+
+public:
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UUserWidget> MainMenuWidgetClass;
+
+private:
+	UUserWidget* CurrentWidget;
 };
