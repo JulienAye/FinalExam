@@ -17,4 +17,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Cinematic")
 	void ShowCredits();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Cinematic")
+	void BackToMenu();
 };
