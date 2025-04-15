@@ -72,13 +72,26 @@ void ADoor::EvaluateDoorCondition()
 		}
 	}
 
-	if (ActivatedButtons >= RequiredButtons && ActivatedPressurePlates >= RequiredPressurePlates)
+	if (bOtherLogicDoor)
 	{
-		OpenDoor();
+		if (ActivatedButtons > 0 || ActivatedPressurePlates > 0)
+		{
+			OpenDoor();
+		}
+		else
+		{
+			CloseDoor();
+		}
 	}
 	else {
-		CloseDoor();
+		if (ActivatedButtons >= RequiredButtons && ActivatedPressurePlates >= RequiredPressurePlates)
+		{
+			OpenDoor();
+		}
+		else {
+			CloseDoor();
 
+		}
 	}
 }
 

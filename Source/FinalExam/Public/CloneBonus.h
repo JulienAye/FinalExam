@@ -7,6 +7,7 @@
 #include "CloneBonus.generated.h"
 
 class ATutorielManager;
+class UPlayerHUDWidget;
 
 UCLASS()
 class FINALEXAM_API ACloneBonus : public AActor
@@ -16,6 +17,8 @@ class FINALEXAM_API ACloneBonus : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ACloneBonus();
+
+	UPlayerHUDWidget* PlayerHUD;
 
 protected:
 

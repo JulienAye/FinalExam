@@ -28,17 +28,17 @@ bool AObstacleWall::AreAllConditionsMet() const
 {
 	for (AInteractiveButton* Button : Buttons)
 	{
-		if (!Button || !Button->IsActivated())
-			return false;
+		if (Button && Button->IsActivated())
+			return true;
 	}
 
 	for (APressurePlate* Plate : PressurePlates)
 	{
-		if (!Plate || !Plate->bIsActivated)
-			return false;
+		if (Plate && Plate->bIsActivated)
+			return true;
 	}
 
-	return true;
+	return false;
 }
 
 void AObstacleWall::RegisterPressurePlate(APressurePlate* PressurePlate)

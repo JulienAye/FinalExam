@@ -4,8 +4,9 @@
 #include "CloneBonus.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include"MainCharacter.h"
+#include "MainCharacter.h"
 #include "TutorielManager.h"
+#include "PlayerHUDWidget.h"
 
 // Sets default values
 ACloneBonus::ACloneBonus()
@@ -52,6 +53,8 @@ void ACloneBonus::OnOverlapBegin(
                 bHasTriggeredTutorialEvent = true;
             }
             Player->AvailableClones++;
+            if (Player->PlayerHUD)
+                Player->PlayerHUD->SetCloneCount(Player->AvailableClones);
             Destroy();
         }
     }

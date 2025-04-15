@@ -47,6 +47,9 @@ public:
 
 	bool bIsOpen;
 
+	UPROPERTY(EditAnywhere, Category = "Door")
+	bool bOtherLogicDoor = false;
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Door")
 	UStaticMeshComponent* DoorMesh;

@@ -58,6 +58,12 @@ void AInteractiveButton::BeginPlay()
 		}
 	}
 
+	for (AObstacleWall* Wall : LinkedWalls)
+	{
+		if (Wall)
+			Wall->RegisterButton(this);
+	}
+
 
 	if (ButtonWidgetClass)
 	{
@@ -80,6 +86,12 @@ void AInteractiveButton::ResetButton()
 		{
 			Door->EvaluateDoorCondition();
 		}
+	}
+
+	for (AObstacleWall* Wall : LinkedWalls)
+	{
+		if (Wall)
+			Wall->EvaluateConditions();
 	}
 }
 

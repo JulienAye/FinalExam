@@ -132,7 +132,7 @@ void AMainCharacter::UseInteract(const FInputActionValue& Value)
 	CollisionParams.AddIgnoredActor(this);
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, StartRay, EndRay, ECC_Visibility, CollisionParams);
-	DrawDebugLine(GetWorld(), StartRay, EndRay, FColor::Red, false, 1.f, 0, 2.f);
+	//DrawDebugLine(GetWorld(), StartRay, EndRay, FColor::Red, false, 1.f, 0, 2.f);
 
 	if (bHit)
 	{
@@ -144,7 +144,7 @@ void AMainCharacter::UseInteract(const FInputActionValue& Value)
 			{
 				if (GEngine)
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Interacted with something"));
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Interacted with something"));
 				}
 				Interactable->Interact(this);
 			}
